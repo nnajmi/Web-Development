@@ -1,8 +1,3 @@
-var postfix = [];
-//var infix = "x ^ y/(r*z)+d\0";
-//var infix = document.querySelector("#infix");
-var infix = [];
-//alert(infix);
 function IsOperand(x)
 {
     if(x == '+' || x == '-' || x == '*' || x == '/' || x == '^' ||
@@ -40,20 +35,23 @@ function inPrecedence(x)
     return -1;
 }
 
-function InfixToPostfix(infix)
+function InfixToPostfix(exp)
 {
     var stk = [];
+    stk[0] = '(';   
+    var postfix = [];
     var i = 0, j = 0;
     //while(infix[i] != infix.substr(-1))
-    while(i != infix.length)
+    while(i != exp.length)
     {
-        if(IsOperand(infix[i]))
-            postfix[j++] = infix[i++];
+        if(IsOperand(exp[i]))
+            postfix[j++] = exp[i++];
         else
         {
-            if(stk == null || outPrecedence(infix[i]) > inPrecedence(stk[stk.length-1]))
-                stk.push(infix[i++]);
-            else if(outPrecedence(infix[i]) == inPrecedence(stk[stk.length-1]))
+            postfix[j++] = ' ';
+            if(stk == null || outPrecedence(exp[i]) > inPrecedence(stk[stk.length-1]))
+                stk.push(exp[i++]);
+            else if(outPrecedence(exp[i]) == inPrecedence(stk[stk.length-1]))
                     stk.pop();
                 else
                     postfix[j++] = stk.pop();
@@ -63,11 +61,33 @@ function InfixToPostfix(infix)
         postfix[j++] = stk.pop();
     return postfix;
 }
+function InfixToPrefix(preExp)
+{
+    var revInfix = [];
+    var revPrefix = [];
+    var prefix = [];
+    revInfix = preExp.split("").reverse();
+    alert(revInfix);
+    for(i = 0; i < revInfix.length; i++)
+    {
+        if(revInfix[i] == ')')
+            revInfix[i] = '(';
+        else if(revInfix[i] == '(')
+            revInfix[i] = ')';
+    }
+    alert(revInfix.join());
+    revPrefix = InfixToPostfix(revInfix);
+    alert(revPrefix);
+    prefix  = revPrefix.reverse();
+    return prefix;
+}
 function Convert()
 {
-    infix = document.getElementById("infix").value;
-    var result = InfixToPostfix(infix);
-    document.getElementById('postfixLabel').innerHTML = result.join(""); 
+    var infix = document.getElementById("infix").value;
+    var postfixresult = InfixToPostfix(infix);
+    document.getElementById('postfixLabel').innerHTML = postfixresult.join(""); 
+    var prefixresult = InfixToPrefix(infix);
+    document.getElementById('prefixLabel').innerHTML = prefixresult.join("");
 }
 
 
