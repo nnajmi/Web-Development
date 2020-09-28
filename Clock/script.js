@@ -24,3 +24,8 @@ function runTheClock() {
 }
 
 var interval = setInterval(runTheClock, 1000);
+
+// Info button click function
+function info() {
+    document.querySelector("#infoText").innerHTML = "";
+  }
